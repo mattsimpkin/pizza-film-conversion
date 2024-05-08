@@ -85,11 +85,6 @@ $("#supplier-pack").on("click", function () {
 
 });
 
-// Event handler for clicking on supplier-ashai
-$("#supplier-ashai").on("click", function () {
-    $("#supplier-btn").text('Asahi / Marubeni'); // Changes the supplier-btn text to Asahi / Marubeni
-
-});
 
 // Event handler for clicking on supplier-pack
 $("#supplier-pack").on("click", function () {
@@ -100,9 +95,9 @@ $("#supplier-pack").on("click", function () {
     $("#customer-btn").prop("disabled", false); // Ensure the customer dropdown button is enabled
 });
 
-// Event handler for clicking on supplier-ashai
-$("#supplier-ashai").on("click", function () {
-    $("#supplier-btn").text('Asahi / Marubeni'); // Changes supplier-btn text to Asahi / Marubeni
+// Event handler for clicking on supplier-asahi
+$("#supplier-asahi").on("click", function () {
+    $("#supplier-btn").text('Marubeni (EU) GmbH'); // Changes supplier-btn text to "Marubeni (EU) GmbH"
     $("#customer-btn").prop("disabled", false); // Turns on the customer-btn
     $("#customer-asahi-asda, #customer-asahi-morrisons, #customer-asahi-sainsburys").prop("hidden", false); // Ensure the Asahi customers are visible
     $("#customer-pack").prop("hidden", true); // Hide the Packaging 4 Ltd option
