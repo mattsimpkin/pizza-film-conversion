@@ -15,7 +15,10 @@ function avgWeightCalc() {
 
 function paragraphTest() {
     avgWeightCalc();
-    $("#spec-text").text("Min tolerance: " + rollToleranceMin + "kg. Max tolerance: " + rollToleranceMax + "kg. Machine Setting: " + machineSetting + "m. Your average meter weight is: " + avgMeterWeight + "kg.");
+    $("#conversion-ctrl").prop("hidden", false);
+    $("#intro-text").prop("hidden", true);
+    $("#spec-text").prop("hidden", false);
+    $("#spec-text").text("Min tolerance: " + rollToleranceMin + "kg. Max tolerance: " + rollToleranceMax + "kg. Machine Setting: " + machineSetting + "m. Your average meter weight is: " + avgMeterWeight.toFixed(4) + "kg.");
 
     // Event listener for changes in the input field
     $("#input-one").on("input", function () {
@@ -25,6 +28,7 @@ function paragraphTest() {
 
 // Function to update the output value
 function inputConversion() {
+
     let numOne = parseFloat($("#input-one").val()); // Retrieve the value of the input field and convert it to a number
     let result = Math.round(numOne / avgMeterWeight);
     $("#output-one").val(result); // Set the text content of #output-one to the doubled value of numOne
@@ -41,9 +45,6 @@ function updateColor(num) {
     } else {
         $("#output-one").css("color", "green"); // If the value isn't exceeded then the output text is defaulted to black
     }
-
-    console.log("maxToleranceProduct: ", maxToleranceProduct);
-    console.log("minToleranceProduct: ", minToleranceProduct);
 }
 
 
@@ -51,6 +52,9 @@ function updateColor(num) {
 $(document).ready(function () {
     $("#customer-btn").prop("disabled", true); // Disables customer-btn untill a supplier has been specified using the supplier-btn
     $("#filmspec-btn").prop("disabled", true); // Disables the filmspec-btn untill a customer has been specified using the customer-btn
+    $("#conversion-ctrl").prop("hidden", true);
+    $("#spec-text").prop("hidden", true);
+
 });
 
 
