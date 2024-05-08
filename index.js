@@ -5,7 +5,7 @@ let machineSetting;  // Declare machineSetting as a global variable to store the
 let avgMeterWeight; // Declare avgMeterWeight as a global variable to store the average meter weight of roll.
 
 function paragraphTest() {
-    avgMeterWeight = (rollToleranceMax / machineSetting).toFixed(4); // Calculates an average meter weight to nearest 4 decimal places
+    avgMeterWeight = ((rollToleranceMax - rollToleranceMin) / 2 + rollToleranceMin) / machineSetting).toFixed(4); // Calculates an average meter weight to nearest 4 decimal places
     $("#spec-text").text("Min tolerance: " + rollToleranceMin + "kg. Max tolerance: " + rollToleranceMax + "kg. Machine Setting: " + machineSetting + "m. Your average meter weight is: " + avgMeterWeight + "kg.");
 
     // Event listener for changes in the input field
