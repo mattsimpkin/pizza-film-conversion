@@ -226,7 +226,7 @@ $("#spec-asahi-asda-b").on("click", function () {
 });
 
 // Asahi Bunzl Sainsburys 20" x 20" (500mm)
-$("#spec-asahi-sainsburys-a").on("click", function () {
+$("#spec-asahi-a").on("click", function () {
     $("#filmspec-btn").text('20" ' + 'x' + ' 20" ' + '(500mm)'); // Changes filmspec-btn text to 20" x 20" (500mm)
     rollToleranceMin = 2.7;
     rollToleranceMax = 3.0;
