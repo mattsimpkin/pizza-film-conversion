@@ -62,21 +62,21 @@
                         Film Specification
                     </button>
                     <ul class="dropdown-menu">
-                        <li class="pack" id="spec-pack-a"><a class="dropdown-item" href="#">15" x 15" (380mm)</a></li>
-                        <li class="pack" id="spec-pack-b"><a class="dropdown-item" href="#">18" x 18" (450mm)</a></li>
-                        <li class="pack" id="spec-pack-c"><a class="dropdown-item" href="#">20" x 20" (500mm)</a></li>
-                        <li class="pack" id="spec-pack-d"><a class="dropdown-item" href="#">22" x 22" (550mm)</a></li>
-                        <li class="pack" id="spec-pack-e"><a class="dropdown-item" href="#">24" x 24" (600mm)</a></li>
-                        <li class="pack" id="spec-pack-f"><a class="dropdown-item" href="#">27" x 27" (680mm)</a></li>
-                        <li class="asahi" id="spec-asahi-asda-a"><a class="dropdown-item" href="#">600mm x 600mm</a>
+                        <li class="pack" id="pack-15"><a class="dropdown-item" href="#">15" x 15" (380mm)</a></li>
+                        <li class="pack" id="pack-18"><a class="dropdown-item" href="#">18" x 18" (450mm)</a></li>
+                        <li class="pack" id="pack-20"><a class="dropdown-item" href="#">20" x 20" (500mm)</a></li>
+                        <li class="pack" id="pack-22"><a class="dropdown-item" href="#">22" x 22" (550mm)</a></li>
+                        <li class="pack" id="pack-24"><a class="dropdown-item" href="#">24" x 24" (600mm)</a></li>
+                        <li class="pack" id="pack-27"><a class="dropdown-item" href="#">27" x 27" (680mm)</a></li>
+                        <li class="asahi" id="asda-600"><a class="dropdown-item" href="#">600mm x 600mm</a>
                         </li>
-                        <li class="asahi" id="spec-asahi-asda-b"><a class="dropdown-item" href="#">680mm x 680mm</a>
+                        <li class="asahi" id="asda-680"><a class="dropdown-item" href="#">680mm x 680mm</a>
                         </li>
-                        <li class="asahi" id="spec-asahi-a"><a class="dropdown-item" href="#">20" x 20"
+                        <li class="asahi" id="asahi-20"><a class="dropdown-item" href="#">20" x 20"
                                 (500mm)</a></li>
-                        <li class="asahi" id="spec-asahi-morrisons-a"><a class="dropdown-item" href="#">22" x 22"
+                        <li class="asahi" id="morrisons-22"><a class="dropdown-item" href="#">22" x 22"
                                 (550mm)</a></li>
-                        <li class="asahi" id="spec-asahi-b"><a class="dropdown-item" href="#">27" x 27" (680mm)</a></li>
+                        <li class="asahi" id="asahi-27"><a class="dropdown-item" href="#">27" x 27" (680mm)</a></li>
 
 
                     </ul>
@@ -88,8 +88,12 @@
         </div>
 
         <div class="container">
-            <p class="lead mb-4" id="spec-text">Place holder Paragraph used to display product tolerances and weight
-                information.</p>
+            <p class="lead mb-4" id="spec-text">
+                <span id="text-tol-min"></span><br>
+                <span id="text-tol-max"></span><br>
+                <span id="text-machineSetting"></span><br>
+                <span id="text-weight-avg"></span>
+            </p>
         </div>
 
         <div class="container" id="conversion-ctrl">
@@ -108,7 +112,7 @@
                     <span class="mb-3 mb-md-0 text-body-secondary">Created by Matt Simpkin</span>
                 </div>
                 <div class="col-md-4 justify-content-end d-flex">
-                    <span class="mb-3 mb-md-0 text-body-secondary">Build 1.1</span>
+                    <span class="mb-3 mb-md-0 text-body-secondary" id="build-num"></span>
                 </div>
             </footer>
         </div>
