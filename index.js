@@ -1,4 +1,4 @@
-const build = 1.2;
+const build = 1.3;
 
 let rollToleranceMin;  // Declare rollToleranceMin as a global variable to store the value of the lowest tolerance of film roll
 let rollToleranceMax; // Declare rollToleranceMax as a global variable to store the value of the highest tolerance of film roll
@@ -16,8 +16,9 @@ function avgWeightCalc() {
 }
 
 function readyConversion() {
+
     avgWeightCalc();
-    $("#conversion-ctrl").prop("hidden", false); // Reveals the input and output fields
+    $("#input-group").prop("hidden", false); // Reveals the input and output fields
 
     readySpecificationMessage();
 
@@ -33,16 +34,21 @@ function readySpecificationMessage() {
     $("#text-tol-min").text("Min tolerance: " + rollToleranceMin + "Kg");
     $("#text-tol-max").text("Max tolerance: " + rollToleranceMax + "Kg");
     $("#text-machineSetting").text("Machine Setting: " + machineSetting + "m");
-    $("#text-weight-avg").text("Your average meter weight is: " + avgMeterWeight.toFixed(4) + "kg.");
+    $("#text-weight-avg").text("Equation based on " + avgMeterWeight.toFixed(4) + "kg p/meter of film.");
+    $("#input-one").val("Input roll weight in KG.");
 }
 
 // Function to update the output value
 function inputConversion() {
-
     let numOne = parseFloat($("#input-one").val()); // Retrieve the value of the input field and convert it to a number
     let result = Math.round(numOne / avgMeterWeight);
-    $("#output-one").val(result); // Set the text content of #output-one to the doubled value of numOne
-    updateColor(result); // Update the color based on the new value
+
+    if (isNaN(result)) {
+        $("#output-one").text("Waiting for input...");
+    } else {
+        $("#output-one").val(result + "m"); // Set the text content of #output-one to the doubled value of numOne
+        updateColor(result); // Update the color based on the new value
+    }
 }
 
 
@@ -57,12 +63,11 @@ function updateColor(num) {
     }
 }
 
-
 // Initial update when the page loads
 $(document).ready(function () {
     $("#customer-btn").prop("disabled", true); // Disables customer-btn untill a supplier has been specified using the supplier-btn
     $("#filmspec-btn").prop("disabled", true); // Disables the filmspec-btn untill a customer has been specified using the customer-btn
-    $("#conversion-ctrl").prop("hidden", true); // Hides the input and output elements on page load
+    $("#input-group").prop("hidden", true); // Hides the input and output elements on page load
     $("#spec-text").prop("hidden", true); // Hides the film specification information on page load
     $("#build-num").text("Build: " + build); // Displays build number for version control
 
@@ -150,7 +155,6 @@ $("#customer-asahi-sainsburys").on("click", function () {
 // Packaging 4 Spec 15" x 15" (380mm)
 $("#pack-15").on("click", function () {
     $("#filmspec-btn").text('15" ' + 'x' + ' 15" ' + '(380mm)'); // Changes filmspec-btn text to 15" x 15" (380mm)
-    $("#spec-text").text('You have chosen: ' + '15" ' + 'x' + ' 15" ' + '(380mm)');
     rollToleranceMin = 1.9;
     rollToleranceMax = 2.2;
     machineSetting = 475;

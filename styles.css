@@ -1,0 +1,13 @@
+.accepted {
+    color: green;
+    font-weight: bold;
+    text-decoration: underline;
+
+}
+
+.rejected {
+    color: red;
+    font-weight: bold;
+    text-decoration: underline;
+
+}
