@@ -223,7 +223,7 @@ $("#asda-600").on("click", function () {
 });
 
 // Asahi Asda 680mm x 680mm
-$("asda-680").on("click", function () {
+$("#asda-680").on("click", function () {
     $("#filmspec-btn").text('680mm x 680mm'); // Changes filmspec-btn text to 680mm x 680mm
     rollToleranceMin = 3.0;
     rollToleranceMax = 3.3;
