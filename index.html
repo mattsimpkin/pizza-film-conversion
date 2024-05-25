@@ -22,6 +22,9 @@
             <div class="container-fluid">
                 <h1 class="display-12 fw-bold text-body-emphasis">Pizza Film Conversion tool.</h1>
             </div>
+            <div>
+
+            </div>
         </nav>
     </header>
 
@@ -32,14 +35,13 @@
 
                 <!-- Film Supplier Dropdown -->
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" id="supplier-btn" type="button"
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="supplier-btn"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Film Supplier
                     </button>
                     <ul class="dropdown-menu">
-                        <li class="pack" id="supplier-pack"><a class="dropdown-item" href="#">Packaging 4 Ltd</a></li>
-                        <li class="asahi" id="supplier-asahi"><a class="dropdown-item" href="#">Marubeni (EU) GmbH</a>
-                        </li>
+                        <li class="pack dropdown-item" id="supplier-pack">Packaging 4 Ltd</li>
+                        <li class="asahi dropdown-item" id="supplier-asahi">Marubeni (EU) GmbH</li>
                     </ul>
                 </div>
 
@@ -50,13 +52,11 @@
                         Customer
                     </button>
                     <ul class="dropdown-menu">
-                        <li class="pack" id="customer-pack"><a class="dropdown-item" href="#">Packaging 4 Ltd
+                        <li class="pack"><a class="dropdown-item" id="customer-pack">Packaging 4 Ltd
                                 Customers</a></li>
-                        <li class="asahi" id="customer-asahi-asda"><a class="dropdown-item" href="#">Bunzl Asda</a></li>
-                        <li class="asahi" id="customer-asahi-morrisons"><a class="dropdown-item" href="#">Bunzl
-                                Morrisons</a></li>
-                        <li class="asahi" id="customer-asahi-sainsburys"><a class="dropdown-item" href="#">Bunzl
-                                Sainsbury's</a></li>
+                        <li class="asahi dropdown-item" id="customer-asahi-asda">Bunzl Asda</li>
+                        <li class="asahi dropdown-item" id="customer-asahi-morrisons">Bunzl Morrisons</li>
+                        <li class="asahi dropdown-item" id="customer-asahi-sainsburys">Bunzl Sainsbury's</li>
                     </ul>
                 </div>
 
@@ -67,21 +67,17 @@
                         Film Specification
                     </button>
                     <ul class="dropdown-menu">
-                        <li class="pack" id="pack-15"><a class="dropdown-item" href="#">15" x 15" (380mm)</a></li>
-                        <li class="pack" id="pack-18"><a class="dropdown-item" href="#">18" x 18" (450mm)</a></li>
-                        <li class="pack" id="pack-20"><a class="dropdown-item" href="#">20" x 20" (500mm)</a></li>
-                        <li class="pack" id="pack-22"><a class="dropdown-item" href="#">22" x 22" (550mm)</a></li>
-                        <li class="pack" id="pack-24"><a class="dropdown-item" href="#">24" x 24" (600mm)</a></li>
-                        <li class="pack" id="pack-27"><a class="dropdown-item" href="#">27" x 27" (680mm)</a></li>
-                        <li class="asahi" id="asda-600"><a class="dropdown-item" href="#">600mm x 600mm</a>
-                        </li>
-                        <li class="asahi" id="asda-680"><a class="dropdown-item" href="#">680mm x 680mm</a>
-                        </li>
-                        <li class="asahi" id="asahi-20"><a class="dropdown-item" href="#">20" x 20"
-                                (500mm)</a></li>
-                        <li class="asahi" id="morrisons-22"><a class="dropdown-item" href="#">22" x 22"
-                                (550mm)</a></li>
-                        <li class="asahi" id="asahi-27"><a class="dropdown-item" href="#">27" x 27" (680mm)</a></li>
+                        <li class="pack dropdown-item" id="pack-15">15" x 15" (380mm)</li>
+                        <li class="pack dropdown-item" id="pack-18">18" x 18" (450mm)</li>
+                        <li class="pack dropdown-item" id="pack-20">20" x 20" (500mm)</li>
+                        <li class="pack dropdown-item" id="pack-22">22" x 22" (550mm)</li>
+                        <li class="pack dropdown-item" id="pack-24">24" x 24" (600mm)</li>
+                        <li class="pack dropdown-item" id="pack-27">27" x 27" (680mm)</li>
+                        <li class="asahi dropdown-item" id="asahi-600">600mm x 600mm</li>
+                        <li class="asahi dropdown-item" id="asahi-680">680mm x 680mm</li>
+                        <li class="asahi dropdown-item" id="asahi-20">20" x 20" (500mm)</li>
+                        <li class="asahi dropdown-item" id="asahi-22">22" x 22" (550mm)</li>
+                        <li class="asahi dropdown-item" id="asahi-27">27" x 27" (680mm)</li>
 
 
                     </ul>
@@ -105,16 +101,7 @@
         </div>
 
 
-
-        <div class="container">
-            <p class="lead mb-4" id="spec-text">
-                <span id="text-tol-min"></span><br>
-                <span id="text-tol-max"></span><br>
-                <span id="text-machineSetting"></span><br>
-            </p>
-        </div>
-
-        <div class="mb-4">
+        <div class="m-4">
             <div id="input-group">
                 <input id="input-one" class="form-control" type="number" aria-label="weight input"
                     placeholder="Input roll weight in KG.">
@@ -126,13 +113,116 @@
             </p>
         </div>
 
+        <div class="container" id="spec-text">
+            <p class="lead mb-4">
+            <h4>Roll info:</h4>
+            <span id="text-tol-min"></span><br>
+            <span id="text-tol-max"></span><br>
+            <span id="text-machineSetting"></span><br>
+            </p>
+        </div>
+
         <div class="container" id="disclaimer">
             <h6>Disclaimer:</h6>
-            <p>All weights and meterage given are approximations based upon film spec tolerances. Due to outside
-                factors (core weights) it is near impossible to give exact meterage of a roll.<br>
-                Therefor this tool should be used as guidance only and <span class="important">you</span> should <span
-                    class="important">always</span> double check your roll weights
-                are in tolerance as per Packagin 4 Ltd Film Operator Policies.</p>
+            <p>All weights and meterage given are approximations based upon film spec tolerances.<br>
+                Outside factors including; core weights and film micron tolerances, cannot be factored as they are
+                unique
+                to each roll and is near impossible to give exact an meterage of a roll.<br>
+                Therefor this tool should be used as guidance only and as a film operator it is <span
+                    class="important">your responsibility</span> to <span class="important">always</span> double
+                check your roll weights are in tolerance as per Packaging 4 Ltd Film Operator Policies before
+                palletising
+                rolls for despatch.</p>
+        </div>
+
+        <div class="container" id="info-modal">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Important Info
+            </button>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">IMPORTANT INFORMATION</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container" id="disclaimer">
+                                <h5>Intended Use:</h5>
+                                <p>Tool for personal use <span class="important">only</span>.</p>
+                                <p>The intended use for this tool, is to calculate an approximate weight of a film
+                                    roll. Should the worst happen. This tool will give you an approximation of the
+                                    length of your roll, so you can correct such an incident. Thus, preventing
+                                    product loss (hopefully 🤞).<br>
+                                    Such Cases:<br>
+                                <ul>
+                                    <li>
+                                        <p>When running “part rolls” and the master roll has run out and hasn’t been
+                                            noticed.</p>
+                                    </li>
+                                    <li>
+                                        <p>If for whatever reason there is a discrepancy with the film length either
+                                            on master or finished product.</p>
+                                    </li>
+                                    <li>
+                                        <p>If a film core was to fail (break, fall from machine) before a finished
+                                            roll is finished.</p>
+                                    </li>
+                                </ul>
+                                </p>
+                                <h5>Involvement:</h5>
+                                <p>
+                                    Packaging 4 Ltd, Asahi Kasei Corporations or Marubeni <span class="important">have
+                                        not</span> asked me to
+                                    create this tool and I have done so off my own back as a personal project to
+                                    test my own skills.
+                                </p>
+                                <br>
+                                <p>
+                                    “Bunzl”, “Asda”, “Morrisons, “Sainsbury’s”, “Packaging 4 Ltd”, “Asahi Kasei
+                                    Corporations” and “Marubeni (EU) GmbH” <span class="important">are in no
+                                        way</span> affiliated or involved with
+                                    the creation of this tool and their names are for used for identification
+                                    purposes only.
+                                </p>
+                                <h5>Queries:</h5>
+                                <p>
+                                    If you have any queries with regarding a roll, always speak to a <span
+                                        class="important">Team Leader</span> or
+                                    <span class="important">Manager</span> for advice.
+                                </p>
+                                <p>
+                                    Any queries regarding this tool or bug reporting please speak to me directly
+                                    <span class="important">(Matt Simpkin)</span>.
+                                </p>
+                                <h5>Disclaimer:</h5>
+                                <p>All weights and meterage given are approximations based upon film spec
+                                    tolerances.<br>
+                                    Outside factors including; core weights and film micron tolerances, cannot be
+                                    factored as they are
+                                    unique
+                                    to each roll and is near impossible to give exact an meterage of a roll.<br>
+                                    Therefor this tool should be used as guidance only and as a film operator it is
+                                    <span class="important">your responsibility</span> to <span
+                                        class="important">always</span> double
+                                    check your roll weights are in tolerance as per Packaging 4 Ltd Film Operator
+                                    Policies before
+                                    palletising
+                                    rolls for despatch.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -143,6 +233,9 @@
                 <div class="col-md-4">
                     <span class="mb-3 mb-md-0 text-body-secondary">Created by Matt Simpkin</span>
                 </div>
+
+
+
                 <div class="col-md-4">
                     <span class="mb-3 mb-md-0 text-body-secondary" id="build-num"></span>
                 </div>
@@ -151,13 +244,12 @@
     </footer>
 
 
-
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <!-- JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- Domestic JS -->
     <script src="index.js"></script>
 </body>

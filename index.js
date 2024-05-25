@@ -1,268 +1,348 @@
-const build = 1.3;
+const build = 2.1; // Variable declared to show build number. Updated each time the files have been updated.
 
-let rollToleranceMin;  // Declare rollToleranceMin as a global variable to store the value of the lowest tolerance of film roll
-let rollToleranceMax; // Declare rollToleranceMax as a global variable to store the value of the highest tolerance of film roll
-let machineSetting;  // Declare machineSetting as a global variable to store the value of the machine setting for each spec (also the same value of what the film roll should measure)
-
-let avgMeterWeight; // Declare avgMeterWeight as a global variable to store the average meter weight of roll.
-
-
-// Function to calculate the average weight of the roll p/m
-function avgWeightCalc() {
-    let numOne = (rollToleranceMax - rollToleranceMin) / 2; // Finds the difference between rollToleranceMax and rollToleranceMin and halves it
-    let numTwo = (rollToleranceMin + numOne).toFixed(4); // Adds the value from previous line to rollTolerancemin to find the middle between the two tolerances and sets the value to 4 decimal places
-
-    avgMeterWeight = numTwo / machineSetting; // Divides the value of the previous line with the machineSetting variable to reach the final target
-}
-
-function readyConversion() {
-
-    avgWeightCalc();
-    $("#input-group").prop("hidden", false); // Reveals the input and output fields
-
-    readySpecificationMessage();
-
-    // Event listener for changes in the input field
-    $("#input-one").on("input", function () {
-        inputConversion(); // Call inputTest function to update the output value when input changes
-    });
-}
-
-function readySpecificationMessage() {
-    $("#intro-text").prop("hidden", true); // Hides the intro text
-    $("#spec-text").prop("hidden", false); // Reveals the Specification text
-    $("#text-tol-min").text("Min tolerance: " + rollToleranceMin + "Kg");
-    $("#text-tol-max").text("Max tolerance: " + rollToleranceMax + "Kg");
-    $("#text-machineSetting").text("Machine Setting: " + machineSetting + "m");
-    $("#text-weight-avg").text("Equation based on " + avgMeterWeight.toFixed(4) + "kg p/meter of film.");
-    $("#input-one").val("Input roll weight in KG.");
-}
-
-// Function to update the output value
-function inputConversion() {
-    let numOne = parseFloat($("#input-one").val()); // Retrieve the value of the input field and convert it to a number
-    let result = Math.round(numOne / avgMeterWeight);
-
-    if (isNaN(result)) {
-        $("#output-one").text("Waiting for input...");
-    } else {
-        $("#output-one").val(result + "m"); // Set the text content of #output-one to the doubled value of numOne
-        updateColor(result); // Update the color based on the new value
-    }
-}
-
-
-// Function to update the color of the output text
-function updateColor(num) {
-    let maxToleranceProduct = Math.round(rollToleranceMax / avgMeterWeight); // Calculates roll weight at max tolerance
-    let minToleranceProduct = Math.round(rollToleranceMin / avgMeterWeight); // Calculates roll weight at min tolerance
-    if (num > maxToleranceProduct || num < minToleranceProduct) {  // Compares if the the output figure fits between the min and max tolerance ranges
-        $("#output-one").css("color", "red"); // Change the color of the output text to red
-    } else {
-        $("#output-one").css("color", "green"); // If the value isn't exceeded then the output text is defaulted to black
-    }
-}
-
-// Initial update when the page loads
+// // Initial update when the page loads
 $(document).ready(function () {
-    $("#customer-btn").prop("disabled", true); // Disables customer-btn untill a supplier has been specified using the supplier-btn
-    $("#filmspec-btn").prop("disabled", true); // Disables the filmspec-btn untill a customer has been specified using the customer-btn
+    setButtonDisabled(BUTTON_IDS.CUSTOMER_BTN, true); // Disables customer-btn untill a supplier has been specified using the supplier-btn
+    setButtonDisabled(BUTTON_IDS.FILMSPEC_BTN, true); // Disables the filmspec-btn untill a customer has been specified using the customer-btn
     $("#input-group").prop("hidden", true); // Hides the input and output elements on page load
     $("#spec-text").prop("hidden", true); // Hides the film specification information on page load
     $("#build-num").text("Build: " + build); // Displays build number for version control
-
 });
+
+// Function created to calculate the average weight p/m off the roll.
+function readyConversion(min, max, setting) {
+
+    let numOne = (max - min) / 2; // Calculate the difference between max and min and halve it
+    let numTwo = (min + numOne).toFixed(4); // Add the value from the previous line to min to find the middle value and set it to 4 decimal places
+
+    let avgMeterWeight = (numTwo / setting).toFixed(4); // Calculate the average meter weight by dividing numTwo by the setting
+
+    // Update the text content on the page
+    $("#text-tol-min").text("Min tolerance: " + min + "Kg");
+    $("#text-tol-max").text("Max tolerance: " + max + "Kg");
+    $("#text-machineSetting").text("Machine Setting: " + setting + "m");
+    $("#text-weight-avg").text("Equation based on " + avgMeterWeight + "kg p/meter of film.");
+
+    // Function to update the output value
+    function inputConversion() {
+        let numOne = parseFloat($("#input-one").val()); // Retrieve the value of the input field and convert it to a number
+        let result = Math.round(numOne / avgMeterWeight);
+
+        if (isNaN(result)) {
+            $("#output-one").text("Waiting for input...");
+        } else {
+            $("#output-one").val(result + "m"); // Set the text content of #output-one to the rounded value of numOne divided by avgMeterWeight
+            updateColor(result); // Update the color based on the new value
+        }
+    }
+
+    // Function to update the color of the output text
+    function updateColor(num) {
+        let maxToleranceProduct = Math.round(max / avgMeterWeight); // Calculates roll weight at max tolerance
+        let minToleranceProduct = Math.round(min / avgMeterWeight); // Calculates roll weight at min tolerance
+        if (num > maxToleranceProduct || num < minToleranceProduct) {  // Compares if the output figure fits between the min and max tolerance ranges
+            $("#output-one").css("color", "red"); // Change the color of the output text to red
+        } else {
+            $("#output-one").css("color", "green"); // If the value isn't exceeded then the output text is defaulted to green
+        }
+    }
+
+    $("#input-one").on("input", function () {
+        inputConversion(); // Call inputConversion function to update the output value when input changes
+    });
+
+    // Initial conversion to set the output based on any pre-existing input value
+    inputConversion();
+}
+
+
+function processReadyConversion(key) {
+    const settings = READY_CONVERSION_SETTINGS[key];
+    if (settings) {
+        readyConversion(settings.min, settings.max, settings.setting);
+    } else {
+        console("Error: No settings found for key in 'processReadyConversion': " + key); // Error handling for unhandled keys
+    }
+
+    $("#intro-text").prop("hidden", true); // Hides the intro text
+    $("#disclaimer").prop("hidden", true); // Hides the disclaimer text
+    $("#spec-text").prop("hidden", false); // Reveals the Specification text
+    $("#input-group").prop("hidden", false); //Reveals the input group
+    $("#input-one").val("Input roll weight in KG."); // Changes input-one value
+}
+
 
 
 //EVENT HANDLERS
 
-// Event Handler clicking supplier-btn (Specifically for when a change in supplier has been made)
-$("#supplier-btn").on("click", function () {
-    $("#customer-btn").text('Customer');  // Changes the customer-btn to Customer
-    $("#filmspec-btn").text('Film Specification'); // Changes the filmspec-btn to Film Specification
-    $("#filmspec-btn").prop("disabled", true); // Disables the filmspec-btn
+// Constants for IDs and text values
+const BUTTON_IDS = {
+    SUPPLIER_BTN: "#supplier-btn",
+    CUSTOMER_BTN: "#customer-btn",
+    FILMSPEC_BTN: "#filmspec-btn",
+    SUPPLIER_PACK: "#supplier-pack",
+    SUPPLIER_ASAHI: "#supplier-asahi",
+    CUSTOMER_PACK: "#customer-pack",
+    CUSTOMER_ASAHI_ASDA: "#customer-asahi-asda",
+    CUSTOMER_ASAHI_MORRISONS: "#customer-asahi-morrisons",
+    CUSTOMER_ASAHI_SAINSBURYS: "#customer-asahi-sainsburys",
+};
 
-});
+const BUTTON_TEXTS = {
+    SUPPLIER_BTN: {
+        PACK: "Packaging 4 Ltd",
+        ASAHI: "Marubeni (EU) GmbH"
+    },
+    CUSTOMER_BTN: {
+        DEFAULT: "Customer",
+        PACK: "Packaging 4 Ltd Customers",
+        ASDA: "Bunzl Asda",
+        MORRISONS: "Bunzl Morrisons",
+        SAINSBURYS: "Bunzl Sainsbury's"
+    },
+    FILM_SPECS: {
+        PACK15: '15" x 15" (380mm)',
+        PACK18: '18" x 18" (450mm)',
+        PACK20: '20" x 20" (500mm)',
+        PACK22: '22" x 22" (550mm)',
+        PACK24: '24" x 24" (600mm)',
+        PACK27: '27" x 27" (680mm)',
+        ASAHI600: '600mm x 600mm',
+        ASAHI680: '680mm x 680mm',
+        ASAHI20: '20" x 20" (500mm)',
+        ASAHI22: '22" x 22" (550mm)',
+        ASAHI27: '27" x 27" (680mm)',
+    }
+};
 
-// Event Handler clicking customer-btn
-$("#customer-btn").on("click", function () {
-    $("#filmspec-btn").text('Film Specification');
+// Constants to store arrays of which specs belong to which customer
+const SPEC_IDS = {
+    PACK: ["#pack-15", "#pack-18", "#pack-20", "#pack-22", "#pack-24", "#pack-27"],
+    ASDA: ["#asahi-600", "#asahi-680"],
+    MORRISONS: ["#asahi-20", "#asahi-22", "#asahi-27"],
+    SAINSBURYS: ["#asahi-20", "#asahi-27"]
+};
 
-});
+// Constants to store the tolerances and settings of each film spec.
+const READY_CONVERSION_SETTINGS = {
+    "#pack-15": { min: 1.9, max: 2.2, setting: 475 },
+    "#pack-18": { min: 2.2, max: 2.5, setting: 450 },
+    "#pack-20": { min: 2.3, max: 2.6, setting: 425 },
+    "#pack-22": { min: 2.7, max: 2.9, setting: 440 },
+    "#pack-24": { min: 2.9, max: 3.2, setting: 450 },
+    "#pack-27": { min: 3.0, max: 3.3, setting: 400 },
+    "#asahi-600": { min: 4.2, max: 4.6, setting: 666 },
+    "#asahi-680": { min: 3.0, max: 3.3, setting: 400 },
+    "#asahi-20": { min: 2.7, max: 3.0, setting: 500 },
+    "#asahi-22": { min: 3.0, max: 3.3, setting: 500 },
+    "#asahi-27": { min: 3.8, max: 4.1, setting: 500 }
+};
 
-// Event handler for clicking on supplier-pack
-$("#supplier-pack").on("click", function () {
-    $("#supplier-btn").text('Packaging 4 Ltd');  // Changes the supplier-btn text to Packaging 4 Ltd
-    $("#customer-btn").text('Packaging 4 Ltd Customers'); // Changes customer-btn text to Packaging 4 Ltd Customers
-    $("#filmspec-btn").prop("disabled", false); // Turns on the filmspec-btn
-    $("#pack-15, #pack-18, #pack-20, #pack-22, #pack-24, #pack-27").prop("hidden", false); // Ensure the Packaging 4 Ltd Film Specs are visible
-    $("#asda-600, #asda-680, #morrisons-22, #asahi-20, #asahi-27").prop("hidden", true); // Hides the Asahi / Marubeni film spec options
-    $("#filmspec-btn").prop("disabled", false); // Ensure the Film Spec dropdown button is enabled
+// Functions to update UI elements
+function updateButtonText(buttonId, text) {
+    $(buttonId).text(text);
+}
 
-});
+function setButtonDisabled(buttonId, isDisabled) {
+    $(buttonId).prop("disabled", isDisabled);
+}
 
-// Event Handler for clicking on customer-pack
-$("#customer-pack").on("click", function () {
-    $("#customer-btn").text('Packaging 4 Ltd Customers'); // Changes customer-btn text to Packaging 4 Ltd Customers
-    $("#filmspec-btn").prop("disabled", false); // Turns on the filmspec-btn
-    $("#pack-15, #pack-18, #pack-20, #pack-22, #pack-24, #pack-27").prop("hidden", false); // Ensure the Packaging 4 Ltd Film Specs are visible
-    $("#asda-600, #asda-680, #morrisons-22, #asahi-20, #asahi-27").prop("hidden", true); // Hides the Asahi / Marubeni film spec options
-    $("#filmspec-btn").prop("disabled", false); // Ensure the Film Spec dropdown button is enabled
-});
+function setElementsHidden(elementGroups, hidden) {
+    elementGroups.forEach(group => {
+        if (Array.isArray(group)) {
+            group.forEach(id => {
+                $(id).prop('hidden', hidden);
+            });
+        } else {
+            $(group).prop('hidden', hidden);
+        }
+    });
+}
 
-
-// Event handler for clicking on supplier-asahi
-$("#supplier-asahi").on("click", function () {
-    $("#supplier-btn").text('Marubeni (EU) GmbH'); // Changes supplier-btn text to "Marubeni (EU) GmbH"
-    $("#customer-btn").prop("disabled", false); // Turns on the customer-btn
-    $("#customer-asahi-asda, #customer-asahi-morrisons, #customer-asahi-sainsburys").prop("hidden", false); // Ensure the Asahi customers are visible
-    $("#customer-pack").prop("hidden", true); // Hide the Packaging 4 Ltd option
-    $("#customer-btn").prop("disabled", false); // Ensure the customer dropdown button is enabled
-});
-
-
-
-// Event Handler for clicking on customer-asahi-asda
-$("#customer-asahi-asda").on("click", function () {
-    $("#customer-btn").text('Bunzl Asda'); // Changes customer-btn text to Bunzl Asda
-    $("#filmspec-btn").prop("disabled", false); // Turns on the filmspec-btn
-    $("#asda-600, #asda-680").prop("hidden", false); // Ensure the Bunzl Asda Film Specs are visible
-    $("#pack-15, #pack-18, #pack-20, #pack-22, #pack-24, #pack-27, #morrisons-22, #asahi-20, #asahi-27").prop("hidden", true); // Hides all specs which aren't Bunzl Asda film spec options
-    $("#filmspec-btn").prop("disabled", false); // Ensure the Film Spec dropdown button is enabled
-});
-
-// Event Handler for clicking on customer-asahi-morrisons
-$("#customer-asahi-morrisons").on("click", function () {
-    $("#customer-btn").text('Bunzl Morrisons'); // Changes customer-btn text to Bunzl Morrisons
-    $("#filmspec-btn").prop("disabled", false); // Turns on the filmspec-btn
-    $("#morrisons-22, #asahi-20, #asahi-27").prop("hidden", false); // Ensure the Bunzl Morrisons Film Specs are visible
-    $("#pack-15, #pack-18, #pack-20, #pack-22, #pack-24, #pack-27, #asda-600, #asda-680").prop("hidden", true); // Hides all specs which aren't Bunzl Morrisons film spec options
-    $("#filmspec-btn").prop("disabled", false); // Ensure the Film Spec dropdown button is enabled
-});
-
-// Event Handler for clicking on customer-asahi-sainsburys
-$("#customer-asahi-sainsburys").on("click", function () {
-    $("#customer-btn").text("Bunzl Sainsbury's"); // Changes customer-btn text to Bunzl Sainsbury's
-    $("#filmspec-btn").prop("disabled", false); // Turns on the filmspec-btn
-    $("#asahi-20, #asahi-27").prop("hidden", false); // Ensure the Bunzl Sainsbury's Specs are visible
-    $("#pack-15, #pack-18, #pack-20, #pack-22, #pack-24, #pack-27, #asda-600, #asda-680, #morrisons-22").prop("hidden", true); // Hides all specs which aren't Bunzl Sainsbury's film spec options
-    $("#filmspec-btn").prop("disabled", false); // Ensure the Film Spec dropdown button is enabled
-});
-
-
-// Film Spec Event Handlers
-
-// Packaging 4 Spec 15" x 15" (380mm)
-$("#pack-15").on("click", function () {
-    $("#filmspec-btn").text('15" ' + 'x' + ' 15" ' + '(380mm)'); // Changes filmspec-btn text to 15" x 15" (380mm)
-    rollToleranceMin = 1.9;
-    rollToleranceMax = 2.2;
-    machineSetting = 475;
-
-    readyConversion();
-});
-
-// Packaging 4 Spec 18" x 18" (450mm)
-$("#pack-18").on("click", function () {
-    $("#filmspec-btn").text('18" ' + 'x' + ' 18" ' + '(450mm)'); // Changes filmspec-btn text to 18" x 18" (450mm)
-    rollToleranceMin = 2.2;
-    rollToleranceMax = 2.5;
-    machineSetting = 450;
-
-    readyConversion();
-});
-
-// Packaging 4 Spec 20" x 20" (500mm)
-$("#pack-20").on("click", function () {
-    $("#filmspec-btn").text('20" ' + 'x' + ' 20" ' + '(500mm)'); // Changes filmspec-btn text to 20" x 20" (500mm)
-    rollToleranceMin = 2.3;
-    rollToleranceMax = 2.6;
-    machineSetting = 425;
-
-    readyConversion();
-});
-
-// Packaging 4 Spec 22" x 22" (550mm)
-$("#pack-22").on("click", function () {
-    $("#filmspec-btn").text('22" ' + 'x' + ' 22" ' + '(550mm)'); // Changes filmspec-btn text to 22" x 22" (550mm)
-    rollToleranceMin = 2.7;
-    rollToleranceMax = 2.9;
-    machineSetting = 440;
-
-    readyConversion();
-});
-
-// Packaging 4 Spec 24" x 24" (600mm)
-$("#pack-24").on("click", function () {
-    $("#filmspec-btn").text('24" ' + 'x' + ' 24" ' + '(600mm)'); // Changes filmspec-btn text to 24" x 24" (600mm)
-    rollToleranceMin = 2.9;
-    rollToleranceMax = 3.2;
-    machineSetting = 450;
-
-    readyConversion();
-});
-
-// Packaging 4 Spec 27" x 27" (680mm)
-$("#pack-27").on("click", function () {
-    $("#filmspec-btn").text('27" ' + 'x' + ' 27" ' + '(680mm)'); // Changes filmspec-btn text to 27" x 27" (680mm)
-    rollToleranceMin = 3.0;
-    rollToleranceMax = 3.3;
-    machineSetting = 400;
-
-    readyConversion();
-});
-
-// Asahi Asda 600mm x 600mm
-$("#asda-600").on("click", function () {
-    $("#filmspec-btn").text('600mm x 600mm'); // Changes filmspec-btn text to 600mm x 600mm
-    rollToleranceMin = 4.2;
-    rollToleranceMax = 4.6;
-    machineSetting = 666;
-
-    readyConversion();
-});
-
-// Asahi Asda 680mm x 680mm
-$("#asda-680").on("click", function () {
-    $("#filmspec-btn").text('680mm x 680mm'); // Changes filmspec-btn text to 680mm x 680mm
-    rollToleranceMin = 3.0;
-    rollToleranceMax = 3.3;
-    machineSetting = 400;
-
-    readyConversion();
-});
-
-// Asahi Bunzl Sainsburys 20" x 20" (500mm)
-$("#asahi-20").on("click", function () {
-    $("#filmspec-btn").text('20" ' + 'x' + ' 20" ' + '(500mm)'); // Changes filmspec-btn text to 20" x 20" (500mm)
-    rollToleranceMin = 2.7;
-    rollToleranceMax = 3.0;
-    machineSetting = 500;
-
-    readyConversion();
-});
-
-// Asahi Bunzle Morrisons 22" x 22" (550mm)
-$("#morrisons-22").on("click", function () {
-    $("#filmspec-btn").text('22" ' + 'x' + ' 22" ' + '(550mm)'); // Changes filmspec-btn text to 22" x 22" (550mm)
-    rollToleranceMin = 3.0;
-    rollToleranceMax = 3.3;
-    machineSetting = 500;
-
-    readyConversion();
-});
-
-// Asahi Spec for 27" x 27" (680mm) - Used for both Bunzl Sainsbury's and Bunzl Morrisons.
-$("#asahi-27").on("click", function () {
-    $("#filmspec-btn").text('27" ' + 'x' + ' 27" ' + '(680mm)'); // Changes filmspec-btn text to 27" x 27" (680mm)
-    rollToleranceMin = 3.8;
-    rollToleranceMax = 4.1;
-    machineSetting = 500;
-
-    readyConversion();
+// Event listeners
+$(".dropdown-menu").on("click", ".dropdown-item", function () {
+    console.log("Dropdown item clicked:", this); // Log the entire clicked element used for error handling
+    let buttonID = this.id;
+    buttonAction(buttonID);
 });
 
 
+
+// Button action handler
+function buttonAction(key) {
+
+    switch (key) {
+        case "supplier-pack": // Decides what happens when Supplier -> Packaging 4 Ltd is selected.
+            updateButtonText(BUTTON_IDS.SUPPLIER_BTN, BUTTON_TEXTS.SUPPLIER_BTN.PACK);
+            updateButtonText(BUTTON_IDS.CUSTOMER_BTN, BUTTON_TEXTS.CUSTOMER_BTN.PACK);
+
+            setButtonDisabled(BUTTON_IDS.CUSTOMER_BTN, false);
+            setButtonDisabled(BUTTON_IDS.FILMSPEC_BTN, false);
+
+            setElementsHidden(
+                [
+                    BUTTON_IDS.CUSTOMER_ASAHI_ASDA,
+                    BUTTON_IDS.CUSTOMER_ASAHI_MORRISONS,
+                    BUTTON_IDS.CUSTOMER_ASAHI_SAINSBURYS,
+                    SPEC_IDS.SAINSBURYS,
+                    SPEC_IDS.ASDA,
+                    SPEC_IDS.MORRISONS
+                ],
+                true
+            );
+            break;
+
+        case "supplier-asahi": // Decides what happens when Supplier -> Marubeni (EU) GmbH is selected.
+            updateButtonText(BUTTON_IDS.SUPPLIER_BTN, BUTTON_TEXTS.SUPPLIER_BTN.ASAHI);
+            updateButtonText(BUTTON_IDS.CUSTOMER_BTN, BUTTON_TEXTS.CUSTOMER_BTN.DEFAULT);
+
+            setButtonDisabled(BUTTON_IDS.CUSTOMER_BTN, false);
+
+            setElementsHidden(
+                [
+                    BUTTON_IDS.CUSTOMER_PACK
+                ],
+                true
+            );
+
+            setElementsHidden(
+                [
+                    BUTTON_IDS.CUSTOMER_ASAHI_ASDA,
+                    BUTTON_IDS.CUSTOMER_ASAHI_MORRISONS,
+                    BUTTON_IDS.CUSTOMER_ASAHI_SAINSBURYS
+                ],
+                false
+            );
+            break;
+
+        case "customer-asahi-asda": // Decides what happens when Customer -> Asda is selected.
+            updateButtonText(BUTTON_IDS.CUSTOMER_BTN, BUTTON_TEXTS.CUSTOMER_BTN.ASDA);
+            setButtonDisabled(BUTTON_IDS.FILMSPEC_BTN, false);
+            setElementsHidden(
+                [
+                    SPEC_IDS.PACK,
+                    SPEC_IDS.SAINSBURYS,
+                    SPEC_IDS.MORRISONS,
+                ],
+                true
+            );
+
+            setElementsHidden(
+                [
+                    SPEC_IDS.ASDA
+                ],
+                false
+            );
+            break;
+
+        case "customer-asahi-morrisons": // Decides what happens when Customer -> Morrisons is selected.
+            updateButtonText(BUTTON_IDS.CUSTOMER_BTN, BUTTON_TEXTS.CUSTOMER_BTN.MORRISONS);
+            setButtonDisabled(BUTTON_IDS.FILMSPEC_BTN, false);
+
+            setElementsHidden(
+                [
+                    SPEC_IDS.PACK,
+                    SPEC_IDS.ASDA,
+                    SPEC_IDS.SAINSBURYS,
+
+                ],
+                true
+            );
+
+            setElementsHidden(
+                [
+                    SPEC_IDS.MORRISONS
+                ],
+                false
+            );
+            break;
+
+        case "customer-asahi-sainsburys": // Decides what happens when Customer -> Sainsbury's is selected.
+            updateButtonText(BUTTON_IDS.CUSTOMER_BTN, BUTTON_TEXTS.CUSTOMER_BTN.SAINSBURYS);
+            setButtonDisabled(BUTTON_IDS.FILMSPEC_BTN, false);
+
+            setElementsHidden(
+                [
+                    SPEC_IDS.PACK,
+                    SPEC_IDS.ASDA,
+                    SPEC_IDS.MORRISONS
+
+                ],
+                true
+            );
+
+            setElementsHidden(
+                [
+                    SPEC_IDS.SAINSBURYS
+                ],
+                false
+            );
+            break;
+
+        case "pack-15": // Decides what happens when Film Specificaton -> 15" x 15" (Pack 4) is selected.
+            updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.PACK15);
+            processReadyConversion("#pack-15");
+            break;
+
+        case "pack-18": // Decides what happens when Film Specificaton -> 18" x 18" (Pack 4) is selected.
+            updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.PACK18);
+            processReadyConversion("#pack-18");
+            break;
+
+        case "pack-20": // Decides what happens when Film Specificaton -> 20" x 20" (Pack 4) is selected.
+            updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.PACK20);
+            processReadyConversion("#pack-20");
+            break;
+
+        case "pack-22": // Decides what happens when Film Specificaton -> 22" x 22" (Pack 4) is selected.
+            updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.PACK22);
+            processReadyConversion("#pack-22");
+            break;
+
+        case "pack-24": // Decides what happens when Film Specificaton -> 24" x 24" (Pack 4) is selected.
+            updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.PACK24);
+            processReadyConversion("#pack-24");
+            break;
+
+
+        case "pack-27": // Decides what happens when Film Specificaton -> 27" x 27" (Pack 4) is selected.
+            updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.PACK27);
+            processReadyConversion("#pack-27");
+            break;
+
+        case "asahi-600": // Decides what happens when Film Specificaton -> 600" x 600" (Asahi) is selected.
+            updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.ASAHI600);
+            processReadyConversion("#asahi-600");
+            break;
+
+        case "asahi-680": // Decides what happens when Film Specificaton -> 680" x 680" (Asahi) is selected.
+            updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.ASAHI680);
+            processReadyConversion("#asahi-680");
+            break;
+
+        case "asahi-20": // Decides what happens when Film Specificaton -> 20" x 20" (Asahi) is selected.
+            updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.ASAHI20);
+            processReadyConversion("#asahi-20");
+            break;
+
+        case "asahi-22": // Decides what happens when Film Specificaton -> 22" x 22" (Asahi) is selected.
+            updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.ASAHI22);
+            processReadyConversion("#asahi-22");
+            break;
+
+        case "asahi-27": // Decides what happens when Film Specificaton -> 27" x 27" (Asahi) is selected.
+            updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.ASAHI27);
+            processReadyConversion("#asahi-27");
+            break;
+
+        default:
+            if (READY_CONVERSION_SETTINGS[key]) {
+                readyConversion(READY_CONVERSION_SETTINGS[key]);
+            } else {
+                console.log("Error: No such case in 'buttonAction' Switch", key); // Error handling for unhandled cases.
+            }
+    }
+}
 
 
 
