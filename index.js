@@ -6,6 +6,7 @@ $(document).ready(function () {
     setButtonDisabled(BUTTON_IDS.FILMSPEC_BTN, true); // Disables the filmspec-btn untill a customer has been specified using the customer-btn
     $("#input-group").prop("hidden", true); // Hides the input and output elements on page load
     $("#spec-text").prop("hidden", true); // Hides the film specification information on page load
+    $("#howto-modal").prop("hidden", true); // Hides the Help modal until required.
     $("#build-num").text("Build: " + build); // Displays build number for version control
 });
 
@@ -31,7 +32,7 @@ function readyConversion(min, max, setting) {
         if (isNaN(result)) {
             $("#output-one").text("Waiting for input...");
         } else {
-            $("#output-one").val(result + "m"); // Set the text content of #output-one to the rounded value of numOne divided by avgMeterWeight
+            $("#output-one").val(result + "m (approx)"); // Set the text content of #output-one to the rounded value of numOne divided by avgMeterWeight
             updateColor(result); // Update the color based on the new value
         }
     }
@@ -64,6 +65,7 @@ function processReadyConversion(key) {
         console("Error: No settings found for key in 'processReadyConversion': " + key); // Error handling for unhandled keys
     }
 
+    $("#howto-modal").prop("hidden", false); // Displays the How to icon
     $("#intro-text").prop("hidden", true); // Hides the intro text
     $("#disclaimer").prop("hidden", true); // Hides the disclaimer text
     $("#spec-text").prop("hidden", false); // Reveals the Specification text

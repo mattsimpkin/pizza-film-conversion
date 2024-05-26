@@ -1,3 +1,7 @@
+h1 {
+    text-align: center;
+}
+
 .accepted {
     color: green;
     font-weight: bold;
@@ -29,4 +33,9 @@
 #info-modal {
     display: flex;
     justify-content: center;
+}
+
+#howto-modal {
+    display: flex;
+    justify-content: flex-end;
 }

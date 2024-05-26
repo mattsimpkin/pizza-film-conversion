@@ -20,7 +20,8 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <h1 class="display-12 fw-bold text-body-emphasis">Pizza Film Conversion tool.</h1>
+                <h1 class="display-12 fw-bold text-body-emphasis">Pizza Film Conversion tool.
+                </h1>
             </div>
             <div>
 
@@ -29,7 +30,54 @@
     </header>
 
     <main>
-        <div class="px-4 py-5 my-5 text-center" id="product-selector">
+        <div class="container" id="howto-modal">
+            <!-- Modal Trigger -->
+            <a data-bs-toggle="modal" data-bs-target="#exampleModal">Help <svg xmlns="http://www.w3.org/2000/svg"
+                    width="16" height="16" fill="currentColor" class="bi bi-person-raised-hand" viewBox="0 0 16 16">
+                    <path
+                        d="M6 6.207v9.043a.75.75 0 0 0 1.5 0V10.5a.5.5 0 0 1 1 0v4.75a.75.75 0 0 0 1.5 0v-8.5a.25.25 0 1 1 .5 0v2.5a.75.75 0 0 0 1.5 0V6.5a3 3 0 0 0-3-3H6.236a1 1 0 0 1-.447-.106l-.33-.165A.83.83 0 0 1 5 2.488V.75a.75.75 0 0 0-1.5 0v2.083c0 .715.404 1.37 1.044 1.689L5.5 5c.32.32.5.754.5 1.207" />
+                    <path d="M8 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+                </svg></a>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title fs-5" id="exampleModalLabel">How to use:</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <ol>
+                                <li>Select your product specification, using the drop downs above.</li>
+                                <li>Once selected, you will be able to input the weight of your roll.<br> (roll weight
+                                    are measured in
+                                    kg, e.g.
+                                    "1.234").</li>
+                                <li>As you enter your roll weight a display will appear showing the approx. roll length
+                                    in meters.</li>
+                                <li>The roll length is calculated using the given roll tolerances for each
+                                    specification.<br>
+                                    If the roll length is displayed in <span class="accepted">green</span>, you are good
+                                    to go!<br>
+                                    However if the roll length is in <span class="rejected">red</span>, then the roll is
+                                    out of
+                                    tolerance and you will need to adjust the roll accordingly, by either adding or
+                                    removing film from
+                                    the roll.</li>
+                            </ol>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="px-4 py-4 text-center" id="product-selector">
 
             <div class="col-lg-6 mx-auto d-grid gap-2 d-sm-flex justify-content-sm-cente">
 
@@ -102,7 +150,7 @@
 
 
         <div class="m-4">
-            <div id="input-group">
+            <div class="m-4" id="input-group">
                 <input id="input-one" class="form-control" type="number" aria-label="weight input"
                     placeholder="Input roll weight in KG.">
                 <input id="output-one" class="form-control" aria-label="readonly input example"
@@ -124,15 +172,14 @@
 
         <div class="container" id="disclaimer">
             <h6>Disclaimer:</h6>
-            <p>All weights and meterage given are approximations based upon film spec tolerances.<br>
+            <p>All weights and meterage given are approximations and based upon film spec tolerances.<br>
                 Outside factors including; core weights and film micron tolerances, cannot be factored as they are
                 unique
-                to each roll and is near impossible to give exact an meterage of a roll.<br>
-                Therefor this tool should be used as guidance only and as a film operator it is <span
-                    class="important">your responsibility</span> to <span class="important">always</span> double
+                to each roll and it would be near impossible to give an exact meterage of a roll.<br>
+                Therefor this tool should be used as <span class="important">guidance only</span> and as a film operator
+                it is <span class="important">your responsibility</span> to double
                 check your roll weights are in tolerance as per Packaging 4 Ltd Film Operator Policies before
-                palletising
-                rolls for despatch.</p>
+                palletising rolls for despatch.</p>
         </div>
 
         <div class="container" id="info-modal">
@@ -148,13 +195,13 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">IMPORTANT INFORMATION</h1>
+                            <h2 class="modal-title fs-5" id="exampleModalLabel">IMPORTANT INFORMATION</h2>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="container" id="disclaimer">
                                 <h5>Intended Use:</h5>
-                                <p>Tool for personal use <span class="important">only</span>.</p>
+                                <p>This tool for personal use <span class="important">only</span>.</p>
                                 <p>The intended use for this tool, is to calculate an approximate weight of a film
                                     roll. Should the worst happen. This tool will give you an approximation of the
                                     length of your roll, so you can correct such an incident. Thus, preventing
@@ -175,9 +222,11 @@
                                     </li>
                                 </ul>
                                 </p>
+                                <hr />
                                 <h5>Involvement:</h5>
                                 <p>
-                                    Packaging 4 Ltd, Asahi Kasei Corporations or Marubeni (EU) GmbH <span class="important">have
+                                    "Packaging 4 Ltd", "Asahi Kasei Corporations" nor “Marubeni (EU) GmbH” <span
+                                        class="important">have
                                         not</span> asked me to
                                     create this tool and I have done so off my own back as a personal project to
                                     test my own skills.
@@ -190,6 +239,7 @@
                                     the creation of this tool and their names are for used for identification
                                     purposes only.
                                 </p>
+                                <hr />
                                 <h5>Queries:</h5>
                                 <p>
                                     If you have any queries with regarding a roll, always speak to a <span
@@ -197,24 +247,23 @@
                                     <span class="important">Manager</span> for advice.
                                 </p>
                                 <p>
-                                    Any queries regarding this tool or bug reporting please speak to me directly
+                                    Any queries regarding this tool or bug reporting please speak to me directly<br>
                                     <span class="important">(Matt Simpkin)</span>.
                                 </p>
+                                <hr />
                                 <h5>Disclaimer:</h5>
-                                <p>All weights and meterage given are approximations based upon film spec
+                                <p>All weights and meterage given are approximations and based upon film spec
                                     tolerances.<br>
                                     Outside factors including; core weights and film micron tolerances, cannot be
                                     factored as they are
                                     unique
-                                    to each roll and is near impossible to give exact an meterage of a roll.<br>
-                                    Therefor this tool should be used as guidance only and as a film operator it is
-                                    <span class="important">your responsibility</span> to <span
-                                        class="important">always</span> double
+                                    to each roll and it would be near impossible to give an exact meterage of a
+                                    roll.<br>
+                                    Therefor this tool should be used as <span class="important">guidance only</span>
+                                    and as a film operator it is <span class="important">your responsibility</span> to
+                                    double
                                     check your roll weights are in tolerance as per Packaging 4 Ltd Film Operator
-                                    Policies before
-                                    palletising
-                                    rolls for despatch.
-                                </p>
+                                    Policies before palletising rolls for despatch.</p>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -233,9 +282,6 @@
                 <div class="col-md-4">
                     <span class="mb-3 mb-md-0 text-body-secondary">Created by Matt Simpkin</span>
                 </div>
-
-
-
                 <div class="col-md-4">
                     <span class="mb-3 mb-md-0 text-body-secondary" id="build-num"></span>
                 </div>
