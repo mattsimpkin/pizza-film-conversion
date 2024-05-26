@@ -39,3 +39,9 @@ h1 {
     display: flex;
     justify-content: flex-end;
 }
+
+@media (max-width: 500px) {
+    .modal-howto-img {
+        width: 250px;
+    }
+}

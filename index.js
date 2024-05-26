@@ -1,4 +1,4 @@
-const build = 2.1; // Variable declared to show build number. Updated each time the files have been updated.
+const build = 2.2; // Variable declared to show build number. Updated each time the files have been updated.
 
 // // Initial update when the page loads
 $(document).ready(function () {
