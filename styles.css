@@ -42,6 +42,12 @@ h1 {
 
 @media (max-width: 500px) {
     .modal-howto-img {
-        width: 250px;
+        width: 100%;
+    }
+
+    #intro-text,
+    #disclaimer {
+        font-size: 0.8rem;
+
     }
 }
