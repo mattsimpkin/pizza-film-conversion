@@ -92,6 +92,7 @@ const BUTTON_IDS = {
 
 const BUTTON_TEXTS = {
     SUPPLIER_BTN: {
+        DEFAULT: "Film Supplier",
         PACK: "Packaging 4 Ltd",
         ASAHI: "Marubeni (EU) GmbH"
     },
@@ -103,6 +104,7 @@ const BUTTON_TEXTS = {
         SAINSBURYS: "Bunzl Sainsbury's"
     },
     FILM_SPECS: {
+        DEFAULT: "Film Specification",
         PACK15: '15" x 15" (380mm)',
         PACK18: '18" x 18" (450mm)',
         PACK20: '20" x 20" (500mm)',
@@ -127,6 +129,7 @@ const SPEC_IDS = {
 
 // Constants to store the tolerances and settings of each film spec.
 const READY_CONVERSION_SETTINGS = {
+    "reset": { min: 0, max: 0, setting: 0 },
     "#pack-15": { min: 1.9, max: 2.2, setting: 475 },
     "#pack-18": { min: 2.2, max: 2.5, setting: 450 },
     "#pack-20": { min: 2.3, max: 2.6, setting: 425 },
@@ -149,6 +152,15 @@ function setButtonDisabled(buttonId, isDisabled) {
     $(buttonId).prop("disabled", isDisabled);
 }
 
+function dropdownReset() {
+    setButtonDisabled(BUTTON_IDS.CUSTOMER_BTN, true);
+    setButtonDisabled(BUTTON_IDS.FILMSPEC_BTN, true);
+    updateButtonText(BUTTON_IDS.SUPPLIER_BTN, BUTTON_TEXTS.SUPPLIER_BTN.DEFAULT);
+    updateButtonText(BUTTON_IDS.CUSTOMER_BTN, BUTTON_TEXTS.CUSTOMER_BTN.DEFAULT);
+    updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.DEFAULT);
+    processReadyConversion("reset");
+}
+
 function setElementsHidden(elementGroups, hidden) {
     elementGroups.forEach(group => {
         if (Array.isArray(group)) {
@@ -161,14 +173,24 @@ function setElementsHidden(elementGroups, hidden) {
     });
 }
 
-// Event listeners
+// Event listeners for drop down items
 $(".dropdown-menu").on("click", ".dropdown-item", function () {
     console.log("Dropdown item clicked:", this); // Log the entire clicked element used for error handling
     let buttonID = this.id;
     buttonAction(buttonID);
 });
 
+$("#supplier-btn").on("click", function () {
+    console.log("supplier-btn clicked"); // Log the entire clicked element used for error handling
+    dropdownReset();
+});
 
+$("#customer-btn").on("click", function () {
+    console.log("customer-btn clicked"); // Log the entire clicked element used for error handling
+    setButtonDisabled(BUTTON_IDS.FILMSPEC_BTN, true);
+    updateButtonText(BUTTON_IDS.FILMSPEC_BTN, BUTTON_TEXTS.FILM_SPECS.DEFAULT);
+    processReadyConversion("reset");
+});
 
 // Button action handler
 function buttonAction(key) {
@@ -177,6 +199,7 @@ function buttonAction(key) {
         case "supplier-pack": // Decides what happens when Supplier -> Packaging 4 Ltd is selected.
             updateButtonText(BUTTON_IDS.SUPPLIER_BTN, BUTTON_TEXTS.SUPPLIER_BTN.PACK);
             updateButtonText(BUTTON_IDS.CUSTOMER_BTN, BUTTON_TEXTS.CUSTOMER_BTN.PACK);
+
 
             setButtonDisabled(BUTTON_IDS.CUSTOMER_BTN, false);
             setButtonDisabled(BUTTON_IDS.FILMSPEC_BTN, false);
@@ -191,6 +214,14 @@ function buttonAction(key) {
                     SPEC_IDS.MORRISONS
                 ],
                 true
+            );
+
+            setElementsHidden(
+                [
+                    BUTTON_IDS.CUSTOMER_PACK,
+                    SPEC_IDS.PACK,
+                ],
+                false
             );
             break;
 
@@ -215,6 +246,30 @@ function buttonAction(key) {
                 ],
                 false
             );
+            break;
+
+        case "customer-pack":
+            setButtonDisabled(BUTTON_IDS.FILMSPEC_BTN, false);
+            setElementsHidden(
+                [
+                    BUTTON_IDS.CUSTOMER_ASAHI_ASDA,
+                    BUTTON_IDS.CUSTOMER_ASAHI_MORRISONS,
+                    BUTTON_IDS.CUSTOMER_ASAHI_SAINSBURYS,
+                    SPEC_IDS.SAINSBURYS,
+                    SPEC_IDS.ASDA,
+                    SPEC_IDS.MORRISONS
+                ],
+                true
+            );
+
+            setElementsHidden(
+                [
+                    BUTTON_IDS.CUSTOMER_PACK,
+                    SPEC_IDS.PACK,
+                ],
+                false
+            );
+
             break;
 
         case "customer-asahi-asda": // Decides what happens when Customer -> Asda is selected.
