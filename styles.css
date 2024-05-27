@@ -40,10 +40,11 @@ h1 {
     justify-content: flex-end;
 }
 
+.modal-howto-img {
+    width: 100%;
+}
+
 @media (max-width: 500px) {
-    .modal-howto-img {
-        width: 100%;
-    }
 
     #intro-text,
     #disclaimer {
